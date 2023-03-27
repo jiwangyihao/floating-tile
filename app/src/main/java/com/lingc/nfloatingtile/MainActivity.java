@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.app.ActivityManager;
 
 import com.lingc.nfloatingtile.util.SpUtil;
 
@@ -37,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.parseColor("#e5e5e5"));
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            
+            tasks = (getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).appTasks
+            if (!tasks.isNullOrEmpty()) {
+                tasks[0].setExcludeFromRecents(true)
+            }
+            
         }
 
 

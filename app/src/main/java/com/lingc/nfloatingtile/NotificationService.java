@@ -30,7 +30,10 @@ public class NotificationService extends NotificationListenerService {
         if (!powerManager.isScreenOn()) {
             return;
         }
-        cancelAllNotifications();
+        String hide = SpUtil.getSp(NotificationService.this).getString("hidenotification", "yes");
+        if (hide.equals("yes")) {
+            cancelAllNotifications();
+        }
  
         Bundle extras = sbn.getNotification().extras;
 //        int id = sbn.getId();

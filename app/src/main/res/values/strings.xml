@@ -1,14 +1,23 @@
 <resources>
     <string name="app_name">悬浮通知磁贴</string>
-
+ 
     <string-array name="array_position_entries">
         <item>向上</item>
         <item>向下</item>
     </string-array>
-
+ 
     <string-array name="array_position_entries_values">
         <item>up</item>
         <item>down</item>
     </string-array>
-
+    <string-array name="array_hide">
+        <item>不隐藏</item>
+        <item>隐藏</item>
+    </string-array>
+ 
+    <string-array name="array_hide_values">
+        <item>no</item>
+        <item>yes</item>
+    </string-array>
+ 
 </resources>

@@ -31,10 +31,16 @@
  
     <EditTextPreference
         android:key="tileShowTime"
-        android:summary="通知几秒后隐藏,0则不隐藏,\n注意：被点击过的通知无论何时都不会自动隐藏！"
+        android:summary="通知几秒后隐藏,0则不隐藏\n注意：被点击过的通知无论何时都不会自动隐藏！"
         android:inputType="number"
         android:defaultValue="10"
         android:title="显示时间" />
+    <ListPreference
+        android:key="hidenotification"
+        android:defaultValue="yes"
+        android:entries="@array/array_hide"
+        android:entryValues="@array/array_hide_values"
+        android:title="是否隐藏通知栏信息" />
  
     <Preference
         android:key="tilePosition"

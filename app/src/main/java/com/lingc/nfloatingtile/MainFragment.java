@@ -101,6 +101,13 @@ public class MainFragment extends PreferenceFragmentCompat {
                 return false;
             }
         });
+        findPreference("hidenotification").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                TileObject.clearAllTile();
+                return false;
+            }
+        });
         findPreference("tileDirection").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {

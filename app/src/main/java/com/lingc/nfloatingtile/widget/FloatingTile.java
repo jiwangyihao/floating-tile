@@ -39,8 +39,7 @@ public class FloatingTile {
     private boolean isOpen;
     private FloatingTile lastTile;
     public boolean isRemove;
-    public View view;
-    private boolean stop=false;
+    private View view;
     public  boolean beclose=true;
  
     public void setLastTile(FloatingTile lastTile) {

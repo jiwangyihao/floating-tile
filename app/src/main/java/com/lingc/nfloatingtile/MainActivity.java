@@ -39,9 +39,9 @@ public class MainActivity extends AppCompatActivity {
             window.setStatusBarColor(Color.parseColor("#e5e5e5"));
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             
-            tasks = (getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).appTasks
+            tasks = (getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).appTasks;
             if (!tasks.isNullOrEmpty()) {
-                tasks[0].setExcludeFromRecents(true)
+                tasks[0].setExcludeFromRecents(true);
             }
             
         }

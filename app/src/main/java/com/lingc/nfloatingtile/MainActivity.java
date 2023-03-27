@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             window.setStatusBarColor(Color.parseColor("#e5e5e5"));
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             
-            ActivityManager am = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            ActivityManager am = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager;
             ActivityManager.AppTask tasks = am.appTasks;
             if (!tasks.isNullOrEmpty()) {
                 tasks[0].setExcludeFromRecents(true);
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                             "\n长按悬浮磁贴可响应事件，跳转应用" +
                             "\n向下滑动磁贴可移除此悬浮磁贴" +
                             "\n而向右滑动磁贴即可移除屏幕中所有悬浮磁贴（不包括待显示列表的磁贴）" +
-                            "\n如果您不手动移除悬浮磁贴它将会一直驻留在屏幕中，您可以修改屏幕内最多磁贴显示数量，默认为6个" +
+                            "\n在设定的超时时间后，未被操作的磁贴将被自动移除，您可以修改屏幕内最多磁贴显示数量和超时时间，默认数量为6个，默认时间为10秒" +
                             "" +
                             "\n\n应用启动需要通知使用权和悬浮窗权限，带有感叹号的是未赋予的权限，您必须赋予后才能正常使用" +
                             "" +

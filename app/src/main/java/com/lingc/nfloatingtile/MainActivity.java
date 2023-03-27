@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             window.setStatusBarColor(Color.parseColor("#e5e5e5"));
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             
-            getSystemService()
+            getSystemService();
             ActivityManager am = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager;
             ActivityManager.AppTask tasks = am.appTasks;
             if (!tasks.isNullOrEmpty()) {

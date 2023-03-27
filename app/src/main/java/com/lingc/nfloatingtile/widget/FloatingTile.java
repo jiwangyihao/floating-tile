@@ -1,5 +1,5 @@
 package com.lingc.nfloatingtile.widget;
-
+ 
 import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -17,11 +17,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+ 
 import com.lingc.nfloatingtile.R;
 import com.lingc.nfloatingtile.util.PackageUtil;
 import com.lingc.nfloatingtile.util.SpUtil;
-
+ 
 /**
  * Create by LingC on 2019/8/4 22:11
  */
@@ -32,19 +32,21 @@ public class FloatingTile {
     private String packagename;
     private PendingIntent pendingIntent;
     private Context context;
-
+ 
     private WindowManager windowManager;
     private WindowManager.LayoutParams layoutParams;
     public boolean isEditPos;
     private boolean isOpen;
     private FloatingTile lastTile;
     public boolean isRemove;
-    private View view;
-
+    public View view;
+    private boolean stop=false;
+    public  boolean beclose=true;
+ 
     public void setLastTile(FloatingTile lastTile) {
         this.lastTile = lastTile;
     }
-
+ 
     public void setContent(Bitmap icon, String title, String content, String packagename, PendingIntent pendingIntent) {
         this.icon = icon;
         this.title = title;
@@ -57,7 +59,7 @@ public class FloatingTile {
         this.packagename = packagename;
         this.pendingIntent = pendingIntent;
     }
-
+ 
     public void showWindow(Context context) {
         this.context = context;
         windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -67,9 +69,14 @@ public class FloatingTile {
         ImageView imageView = view.findViewById(R.id.window_icon_img);
         final TextView titleText = view.findViewById(R.id.window_title_text);
         final TextView contentText = view.findViewById(R.id.window_content_text);
+        messageLay.setVisibility(View.VISIBLE);
+        titleText.setText(title);
+        contentText.setText(content);
+        isOpen=!isOpen;
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+ 
                 if (isOpen) {
                     messageLay.setVisibility(View.GONE);
                 } else {
@@ -82,11 +89,13 @@ public class FloatingTile {
                 view.measure(width, height);
                 int viewWidth = v.getMeasuredWidth();
                 int viewHeight = v.getMeasuredHeight();
-
+ 
                 layoutParams.width = viewWidth;
                 layoutParams.height = viewHeight;
                 windowManager.updateViewLayout(v, layoutParams);
                 isOpen = !isOpen;
+                beclose=false;
+                TileObject.showingFloatingTileList.remove(FloatingTile.this);
             }
         });
         view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -111,7 +120,7 @@ public class FloatingTile {
         view.measure(width, height);
         int viewWidth = view.getMeasuredWidth();
         int viewHeight = view.getMeasuredHeight();
-
+ 
         String showDirection = SpUtil.getSp(context).getString("tileDirection", "down");
 //        if (showDirection.equals("up")) {
 //            layoutParams.y = -640;
@@ -125,7 +134,7 @@ public class FloatingTile {
             layoutParams.x = SpUtil.getSp(context).getInt("x", -1);
             layoutParams.y = SpUtil.getSp(context).getInt("y", -1);
         }
-
+ 
         int mostShowNum = Integer.valueOf(SpUtil.getSp(context).getString("tileShowNum", "6"));
         if (TileObject.showTileNum == 0) {
             // 屏幕内没有任何 Tile
@@ -171,7 +180,7 @@ public class FloatingTile {
         }
         layoutParams.width = viewWidth;
         layoutParams.height = viewHeight;
-
+ 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         } else {
@@ -181,13 +190,13 @@ public class FloatingTile {
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM;
         layoutParams.format = PixelFormat.RGBA_8888;
         layoutParams.windowAnimations = android.R.style.Animation_Translucent;
-
+ 
         if (icon == null) {
             imageView.setImageDrawable(PackageUtil.getAppIconFromPackname(context, packagename));
         } else {
             imageView.setImageBitmap(icon);
         }
-
+ 
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
@@ -197,7 +206,7 @@ public class FloatingTile {
                     // 无悬浮窗权限
                     e.printStackTrace();
                 }
-
+ 
                 if (!isEditPos) {
                     TileObject.showingFloatingTileList.add(FloatingTile.this);
                 }
@@ -205,12 +214,12 @@ public class FloatingTile {
         });
         TileObject.lastFloatingTile = this;
     }
-
-
+ 
+ 
     private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         private float x1 = 0;
         private float y1 = 0;
-
+ 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             switch (event.getAction()) {
@@ -231,14 +240,14 @@ public class FloatingTile {
             return false;
         }
     };
-
+ 
     /**
      * 设置位置
      */
     private View.OnTouchListener editPosFloatingOnTouchListener = new View.OnTouchListener() {
         private int x;
         private int y;
-
+ 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             switch (event.getAction()) {
@@ -270,7 +279,7 @@ public class FloatingTile {
             return false;
         }
     };
-
+ 
     public void removeTile() {
         // It's time to show some Floating Tile that waiting for showing.
         if (isRemove) {
@@ -283,7 +292,7 @@ public class FloatingTile {
         showWaitingTile();
         removeView();
     }
-
+ 
     public void showWaitingTile() {
         if (!TileObject.waitingForShowingTileList.isEmpty()) {
             FloatingTile floatingTile = TileObject.waitingForShowingTileList.get(0);
@@ -292,9 +301,9 @@ public class FloatingTile {
             TileObject.waitingForShowingTileList.remove(floatingTile);
         }
     }
-
+ 
     public void removeView() {
         windowManager.removeView(view);
     }
-
+ 
 }

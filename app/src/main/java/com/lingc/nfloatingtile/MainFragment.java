@@ -1,5 +1,5 @@
 package com.lingc.nfloatingtile;
-
+ 
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
@@ -15,19 +15,19 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.text.TextUtils;
 import android.widget.Toast;
-
+ 
 import com.lingc.nfloatingtile.util.DialogUtil;
 import com.lingc.nfloatingtile.widget.FloatingTile;
 import com.lingc.nfloatingtile.widget.TileObject;
-
+ 
 import java.util.Set;
-
+ 
 /**
  * Create by LingC on 2019/8/4 21:54
  */
 public class MainFragment extends PreferenceFragmentCompat {
     private boolean isCanDrawWindow;
-
+ 
     @Override
     public void onResume() {
         super.onResume();
@@ -51,12 +51,12 @@ public class MainFragment extends PreferenceFragmentCompat {
             Toast.makeText(getContext(), "权限不足，将无法正常使用应用", Toast.LENGTH_SHORT).show();
         }
     }
-
+ 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
         getPreferenceManager().setSharedPreferencesName("appSettings");
         addPreferencesFromResource(R.xml.pref_lay);
-
+ 
         findPreference("notificatListen").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -81,13 +81,20 @@ public class MainFragment extends PreferenceFragmentCompat {
                 }
                 FloatingTile floatingTile = new FloatingTile();
                 floatingTile.setContent(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher),
-                        "Title", "Message", getContext().getPackageName(), null);
+                        "Title", "Message123456789qwertyuiop[]asdfghjkl;'zxcvbnm,./'", getContext().getPackageName(), null);
                 floatingTile.setLastTile(TileObject.lastFloatingTile);
                 floatingTile.showWindow(getContext());
                 return false;
             }
         });
         findPreference("tileShowNum").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                TileObject.clearAllTile();
+                return false;
+            }
+        });
+        findPreference("tileShowTime").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 TileObject.clearAllTile();
@@ -125,6 +132,7 @@ public class MainFragment extends PreferenceFragmentCompat {
                         .setTitle("关于 - " + getString(R.string.app_name))
                         .setMessage("版本：" + BuildConfig.VERSION_NAME + " (" + BuildConfig.VERSION_CODE + ")" +
                                 "\n开发者：LingC" +
+                                "\n修改：mubbh 吉王义昊"+
                                 "\n编译日期：" + BuildConfig.releaseTime)
                         .setPositiveButton("关闭", null)
                         .show();
@@ -132,7 +140,7 @@ public class MainFragment extends PreferenceFragmentCompat {
             }
         });
     }
-
+ 
     private boolean isNotificationListenerEnable(Context context) {
         if (TextUtils.isEmpty(context.getPackageName())) {
             return false;
@@ -140,7 +148,7 @@ public class MainFragment extends PreferenceFragmentCompat {
         Set<String> packagenameSet = NotificationManagerCompat.getEnabledListenerPackages(context);
         return packagenameSet.contains(context.getPackageName());
     }
-
+ 
     private boolean gotoNotificationAccessSetting() {
         try {
             Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
@@ -162,5 +170,5 @@ public class MainFragment extends PreferenceFragmentCompat {
             return false;
         }
     }
-
+ 
 }

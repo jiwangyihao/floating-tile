@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             
             ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-            ArrayList<ActivityManager.AppTask> tasks = am.getAppTasks();
+            ArrayList<ActivityManager.AppTask> tasks = am.getDefault().getAppTasks(getPackageName());
             if (!tasks.isNullOrEmpty()) {
                 tasks[0].setExcludeFromRecents(true);
             }
